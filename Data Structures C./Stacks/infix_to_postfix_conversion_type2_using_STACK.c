@@ -40,7 +40,7 @@ int prec(char c)
     return 1;
   else if(c=='/'||c=='*')
     return 2;
-  else if(c==-1)
+  else if(c==-1 || c=='(' || c==')')
     return 0;
   else
     return 3;
@@ -66,10 +66,19 @@ char* InfixtoPostfix(char* infix,STACK* st)
   int i=0,j=0;
   while(infix[i]!='\0')
     {
-      if(prec(infix[i])>prec(stackTop(st)))
+      if(prec(infix[i])>prec(stackTop(st)) || infix[i]=='(')
       {
         push(st,infix[i]);
         i++;
+      }
+      else if(infix[i]==')')
+      {
+          while(st->S[st->top]!='(')
+          {
+              postfix[j++] = pop(st);
+          }
+          pop(st);
+          i++;
       }
       else
       {
@@ -85,11 +94,11 @@ char* InfixtoPostfix(char* infix,STACK* st)
 }
 int main()
 {
-  char* infix = "a+b*c+f/g";
+  char* infix = "a+b*(c+f)/g";
   STACK* s;
   s = (STACK*)malloc(sizeof(STACK));
   s->top = -1;
-  s->size = strlen(infix); 
+  s->size = strlen(infix)+1; 
   s->S = (char*)malloc(s->size*sizeof(char));
   char* postfix = InfixtoPostfix(infix,s);
   printf("%s ",postfix);
