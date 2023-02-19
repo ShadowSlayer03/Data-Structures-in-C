@@ -1,0 +1,32 @@
+// Height and Count of a Tree
+#include<stdio.h>
+#include<stdlib.h>
+
+int count(NODE* p)
+{
+  if(p)
+    return count(p->lchild)+count(p->rchild)+1;
+  else
+    return 0;
+}
+int height(NODE* p)
+{
+  int x=0,y=0;
+  if(!p)
+    return 0;
+  else
+  {
+    x = height(p->lchild);
+    y = height(p->rchild);
+    if(x>y)
+      return x+1;
+    else
+      return y+1;
+  }
+}
+int main()
+{
+  printf("%d\n",count(root));
+  printf("%d\n",height(root));
+  return 0;
+}
