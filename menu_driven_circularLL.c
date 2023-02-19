@@ -1,4 +1,4 @@
-// Menu driven doubly linked list operations
+// Menu driven circular linked list operations
 #include<stdio.h>
 #include<stdlib.h>
 
