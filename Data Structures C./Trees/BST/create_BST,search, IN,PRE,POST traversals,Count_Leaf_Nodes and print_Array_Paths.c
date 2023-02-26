@@ -1,8 +1,10 @@
+*******
 // Create BST
 // Inorder,Preorder, Postorder Traversals
 // Search for a node
 // Count leaf nodes
 // Print array Paths from root to leaf
+******
 #include<stdio.h>
 #include<stdlib.h>
 
