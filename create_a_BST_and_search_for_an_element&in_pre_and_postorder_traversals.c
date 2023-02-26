@@ -1,43 +1,63 @@
-// Binary Search Tree and Inorder, Preorder and Postorder Traversals
+// Create BST
+// Inorder,Preorder, Postorder Traversals
+// Search for a node
+// Count leaf nodes
+// Print array Paths from root to leaf
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct Node
+typedef struct node
 {
-  struct Node* lchild;
+  struct node* lchild;
   int data;
-  struct Node* rchild;
+  struct node* rchild;
 }NODE;
 NODE* root=NULL;
-
-void Insert(int key)
+NODE* RecInsert(NODE* p,int key)
 {
-  NODE* newnode,*r,*t;
-  t = root;
-  if(root==NULL)
+  NODE* newnode;
+  if(p==NULL)
   {
     newnode = (NODE*)malloc(sizeof(NODE));
+    newnode->lchild=newnode->rchild=NULL;
     newnode->data = key;
-    newnode->lchild = newnode->rchild = NULL;
-    root = newnode;
-    return;
+    if(root==NULL)
+      root=newnode;
+    return newnode;
   }
-  while(t!=NULL)
-    {
-      r=t;   // r is a trailing pointer of t
-      if(key<t->data)
-        t = t->lchild;
-      else if(key>t->data)
-        t = t->rchild;
-      else
-        return;
-    }
-    newnode = (NODE*)malloc(sizeof(NODE));
-    newnode->data = key;
-    newnode->lchild = newnode->rchild = NULL;
+  if(key>p->data)
+    p->rchild = RecInsert(p->rchild,key);
+  else if(key<p->data)
+    p->lchild = RecInsert(p->lchild,key);
 
-  if(key<r->data) r->lchild = newnode;
-  else r->rchild = newnode;
+  return p;
+}
+void Inorder(NODE* p)
+{
+  if(p)
+  {
+  Inorder(p->lchild);
+  printf("%d ",p->data);
+  Inorder(p->rchild);  
+  }
+}
+void Preorder(NODE* p)
+{
+  if(p)
+  {
+  printf("%d ",p->data);
+  Preorder(p->lchild);
+  Preorder(p->rchild);  
+  }
+}
+void Postorder(NODE* p)
+{
+  if(p)
+  {
+  Postorder(p->lchild);
+  Postorder(p->rchild);  
+  printf("%d ",p->data);
+  }
 }
 NODE* Search(int key)
 {
@@ -53,55 +73,59 @@ NODE* Search(int key)
   }
   return NULL;
 }
-void Inorder(NODE* p)
+int CountLeaf(NODE* p)
 {
-  if(p)
-  {
-  Inorder(p->lchild);
-  printf("%d ",p->data);
-  Inorder(p->rchild);
-  }
-  
+ if(p==NULL)
+   return 0;
+  if(p->lchild==NULL && p->rchild==NULL)
+    return CountLeaf(p->lchild)+CountLeaf(p->rchild)+1;
+  else
+    return CountLeaf(p->lchild)+CountLeaf(p->rchild);
 }
-void Preorder(NODE* p)
+void printArray(int* paths,int pathLen)
 {
-  if(p)
-  {
-  printf("%d ",p->data);
-  Preorder(p->lchild);
-  Preorder(p->rchild);
-  }
+  int i;
+  static int j=1;   // j should be updated as 1,2,3,4.....
+  printf("Path %d: ",j);
+  j++;
+  for(i=0;i<pathLen;i++)
+    {
+      printf("%d",paths[i]);
+      if(i!=pathLen-1)     //arrow shouldn't be printed at the end
+        printf("->");    
+    }
+  printf("\n");
 }
-void Postorder(NODE* p)
-{
-  if(p)
+void printPathsRec(NODE* p,int pathLen)
+{ 
+  static int paths[20];   // so that it isn't reinitialised every recursive call
+  if(p==NULL)
+    return;
+
+  paths[pathLen] = p->data;
+  pathLen++;
+
+  if(p->lchild==NULL && p->rchild==NULL)
+    printArray(&paths[0],pathLen);
+
+  else
   {
-    Postorder(p->lchild);
-  Postorder(p->rchild);
-  printf("%d ",p->data);
+    printPathsRec(p->lchild,pathLen);
+    printPathsRec(p->rchild,pathLen);
   }
 }
 int main()
 {
-  int i=5,val;
-  NODE* temp;
-  while(i!=0)
-    {
-      printf("Enter the key\n");
-      scanf("%d",&val);
-      Insert(val);
-      i--;
-    }
+  RecInsert(root,45);
+  RecInsert(root,67);
+  RecInsert(root,3);
+  RecInsert(root,1);
+  RecInsert(root,23);
+  RecInsert(root,56);
+  RecInsert(root,98);
   Inorder(root);
   printf("\n");
-  Preorder(root);
-  printf("\n");
-  Postorder(root);
-  printf("\n");
-  temp = Search(21);
-  if(temp)
-    printf("Present\n");
-  else
-    printf("Not present\n");
+  printf("No of leaf nodes are %d\n",CountLeaf(root));
+  printPathsRec(root,0);
   return 0;
 }
