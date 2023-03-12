@@ -83,7 +83,7 @@ NODE* Delete(NODE* p,int key)
     }
     else
     {
-      q = InSucc(p->lchild);
+      q = InSucc(p->rchild);
       p->data = q->data;
       p->rchild = Delete(p->rchild,q->data);
     }
