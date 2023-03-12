@@ -15,24 +15,31 @@ typedef struct node
   struct node* rchild;
 }NODE;
 NODE* root=NULL;
-NODE* RecInsert(NODE* p,int key)
+void Insert(NODE* p,int key)
 {
-  NODE* newnode;
-  if(p==NULL)
+  NODE* r=NULL,*newnode;
+  while(p!=NULL)
+    {
+      r = p;
+      if(key==p->data)
+        return;
+      else if(key<p->data)
+        p = p->lchild;
+      else
+        p = p->rchild;
+    }
+  newnode = (NODE*)malloc(sizeof(NODE));
+  newnode->data = key;
+  newnode->lchild = newnode->rchild = NULL;
+  if(root==NULL)
   {
-    newnode = (NODE*)malloc(sizeof(NODE));
-    newnode->lchild=newnode->rchild=NULL;
-    newnode->data = key;
-    if(root==NULL)
-      root=newnode;
-    return newnode;
+    root = newnode;
+    return;
   }
-  if(key>p->data)
-    p->rchild = RecInsert(p->rchild,key);
-  else if(key<p->data)
-    p->lchild = RecInsert(p->lchild,key);
-
-  return p;
+  if(newnode->data<r->data)
+    r->lchild = newnode;
+  else
+    r->rchild = newnode;
 }
 void Inorder(NODE* p)
 {
