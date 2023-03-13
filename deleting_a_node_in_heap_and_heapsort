@@ -1,0 +1,74 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define size 5
+
+void swap(int* a,int* b)
+{
+  int temp;
+  temp = *a;
+  *a = *b;
+  *b = temp;
+}
+void Delete(int* arr,int n)    // Deleting a node and Heap Sort
+{
+  int x;
+  x = arr[1];
+  arr[1] = arr[n];
+  int i=1,j=2*i;
+  while(j<n-1)
+    {
+      if(arr[j]<arr[j+1])
+        j = j+1;
+      if(arr[i]<arr[j])
+      {
+        swap(&arr[i],&arr[j]);
+        i=j;
+        j=2*i;
+      }
+      else
+        return;
+    }
+  arr[n] = x;
+}
+void Insert(int* arr,int n)
+{
+  int i=n;
+  int temp = arr[n];
+  while(i>1 && arr[i/2]<arr[n])
+    {
+      arr[i] = arr[i/2];
+      i = i/2;
+    }
+  arr[i] = temp;
+}
+void CreateHeap(int* arr)
+{
+  int i;
+  for(i=2;i<=size;i++)
+    Insert(arr,i);
+}
+int main()
+{
+  int arr[10],i;
+  arr[0] = -1;
+  printf("Enter the values\n"); // creating the array
+  for(i=1;i<=size;i++)
+    {
+      scanf("%d",&arr[i]);
+    }
+  CreateHeap(&arr[0]);  //creating the heap
+  for(i=1;i<=size;i++)
+    {
+      printf("%d ",arr[i]);
+    }
+  printf("\n");
+  for(i=size;i>=1;i--)
+    {
+      Delete(&arr[0],i);   // deleting root node in heap and adding to end
+    }
+  for(i=1;i<=size;i++)
+    {
+      printf("%d ",arr[i]); // If this is sorted, then heap sort is success
+    }
+  return 0;
+}
