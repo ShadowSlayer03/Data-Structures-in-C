@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+    int data;
+    struct node* next;
+} NODE;
+
+int hash(int num) {
+    return num % 10;
+}
+
+void SortedInsert(NODE** H, int num) {
+    NODE* p = NULL;
+    NODE* q = NULL;
+    int x = hash(num);
+
+    NODE* newnode = (NODE*)malloc(sizeof(NODE));
+    newnode->data = num;
+    newnode->next = NULL;
+    if (H[x] == NULL) {
+        H[x] = newnode;
+        return;
+    }
+    else {
+        q = H[x];
+        while (q != NULL && q->data < newnode->data) {
+            p = q;
+            q = q->next;
+        }
+        if (p == NULL) {
+            newnode->next = H[x];
+            H[x] = newnode;
+        }
+        else {
+            newnode->next = p->next;
+            p->next = newnode;
+        }
+    }
+}
+
+NODE* Search(NODE** H, int key) {
+    NODE* p;
+    int x = hash(key);
+    p = H[x];
+    while (p != NULL) {
+        if (p->data == key) {
+            printf("Key is found\n");
+            return p;
+        }
+        p = p->next;
+    }
+    printf("Key not found\n");
+    return NULL;
+}
+
+int main() {
+    int i;
+    int arr[15] = { 1,56,89,100,78,34,90,92,201,4,8,2,567,890,678 };
+    struct node* HT[10];
+    for (i = 0; i < 10; i++) {
+        HT[i] = NULL;
+    }
+    for (i = 0; i < 15; i++) {
+        SortedInsert(&HT[0], arr[i]);
+    }
+    Search(&HT[0], 34);
+    return 0;
+}
