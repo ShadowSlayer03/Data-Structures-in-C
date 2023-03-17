@@ -1,0 +1,63 @@
+// This is the LINEAR PROBING implementation
+// In case of quadratic probing, hashing function changes to
+// h'(x) = (h(x)+f(i))%10 where f(i) = 0,1,4,9,16......
+#include<stdio.h>
+#define SIZE 10   //In linear probing, as a general rule, the size must always be double of the number of elements to be inserted
+
+int hash(int key)
+{
+  return key%SIZE;
+}
+int probe(int H[],int key)
+{
+  int i=0,index = hash(key);
+  while(H[(index+i)%SIZE]!=0)
+    i++;
+  return (index+i)%SIZE;
+}
+void Insert(int H[],int key)
+{
+  int index = hash(key);
+  if(H[index]!=0)
+    index = probe(H,key);
+  
+  H[index] = key;
+}
+int Search(int H[],int key)
+{
+  int index = hash(key);
+  int temp = index;  // to save the starting index
+    do
+      {
+        if(H[index]==key)
+          return index;
+        index = (index+1)%SIZE;
+      }while(H[index]!=0 && index!=temp); //loop should terminate if blank position occurs or if the index reaches back to starting index
+      return 0;
+}
+
+void Display(int H[])
+{
+  int i;
+  for(i=0;i<SIZE;i++)
+    {
+      printf("%d ",H[i]);
+    } 
+}
+int main()
+{
+  int HT[10]={0};
+   Insert(HT,12);
+   Insert(HT,56);
+   Insert(HT,82);
+   Insert(HT,45);
+   Insert(HT,17);
+   Insert(HT,22);
+   Display(HT);
+  int res = Search(HT,22);
+  if(res)
+    printf("\nKey present at index %d\n",res);
+  else
+    printf("\nKey absent\n");
+  return 0;
+}
