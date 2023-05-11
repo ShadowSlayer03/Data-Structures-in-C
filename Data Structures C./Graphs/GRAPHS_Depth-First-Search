@@ -1,0 +1,70 @@
+// Depth First Search 
+// DFS is similar to prorder traversal in trees
+
+#include<stdio.h>
+#include<stdlib.h>
+#define SIZE 8
+typedef struct node
+{
+  int data;
+  struct node* next;
+}NODE;
+NODE* first = NULL;  
+
+void enqueue(NODE* p,int data)
+{
+  NODE* newnode = (NODE*)malloc(sizeof(NODE));
+  if(!newnode)
+  {
+    printf("No space in queue\n");
+    exit(0);
+  }
+  newnode->data = data;
+  newnode->next = NULL;
+  if(p==NULL)
+    first = newnode;
+  else
+  {
+    while(p->next!=NULL) p=p->next;
+    p->next = newnode;
+  }
+}
+int dequeue(NODE* p)
+{
+  if(p==NULL)
+  {
+    printf("Nothing to dequeue\n");
+    exit(0);
+  }
+  int u=p->data;
+  first = first->next;
+  free(p);
+  return u;
+}
+int isEmpty(NODE* p)
+{
+  return p==NULL;
+}
+void DFS(int A[SIZE][SIZE],int i,int* visit)
+{
+  int col;
+  if(visit[i]==0)
+  {
+    printf("%d ",i);
+    visit[i]=1;
+    for(col=1;col<SIZE;col++)
+      {
+        if(A[i][col]==1 && visit[col]==0)
+          DFS(A,col,visit);
+      }
+  }
+}
+int main()
+{
+  //Adjacency matrix representing a Graph is given
+  int adj[SIZE][SIZE] = {{0,0,0,0,0,0,0,0},{0,0,1,1,0,0,0,0},{0,1,0,1,1,0,0,0},{0,1,1,0,1,1,0,0},{0,0,1,1,0,1,0,0},{0,0,0,1,1,0,1,1},{0,0,0,0,0,1,0,0},{0,0,0,0,0,1,0,0}};
+  //A matrix that records if a vertex is visited or not
+  int visited[SIZE] = {0};
+  DFS(adj,7,&visited[0]);
+  return 0;
+}
