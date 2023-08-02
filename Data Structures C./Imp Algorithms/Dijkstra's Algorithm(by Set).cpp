@@ -1,52 +1,71 @@
-// By using Set
-#include<iostream>
-#include<vector>
-#include<set>
-#include<functional>
+#include <iostream>
+#include <vector>
+#include <set>
 using namespace std;
 
-vector<int> dijkstra(int V, vector<vector<int>> adj[],int S)
+vector<int> dijkstra(int V, vector<vector<pair<int, int>>>& adj, int S)
 {
-  set<pair<int,int>> st;
-  vector<int> dist(V, 1e9);
+    set<pair<int, int>> st;
+    vector<int> dist(V, 1e9);
 
-  dist[S] = 0;
-  st.insert({0,S});
+    dist[S] = 0;
+    st.insert({0, S});
 
-  while(!st.empty())
-  {
-    auto it = *(st.begin());
-    int dis = it.first;
-    int node = it.second;
-    st.erase(it);
+    while (!st.empty())
+    {
+        auto it = st.begin();
+        int dis = it->first;
+        int node = it->second;
+        st.erase(it);
 
-    for(auto it:adj[node])
-      {
-        int adjNode = it[0];
-        int adjWeight = it[1];
-
-        if(dis+adjWeight<dist[adjNode])
+        for (auto it : adj[node])
         {
-          if(dist[adjNode]!=1e9)
-            st.erase({dist[adjNode],adjNode});
-          
-            dist[adjNode] = dis+adjWeight;
-            st.insert({dist[adjNode],adjNode});
+            int adjNode = it.first;
+            int adjWeight = it.second;
+
+            if (dis + adjWeight < dist[adjNode])
+            {
+                if (dist[adjNode] != 1e9)
+                {
+                    auto it = st.find({dist[adjNode], adjNode});
+                    if (it != st.end())
+                        st.erase(it);
+                }
+
+                dist[adjNode] = dis + adjWeight;
+                st.insert({dist[adjNode], adjNode});
+            }
         }
-      }
-  }
-return dist;    
+    }
+    return dist;
 }
+
 int main()
 {
-    int V = 3;
-    vector<vector<int>> adj[] = {{{1, 1}, {2, 6}}, {{2, 3}, {0, 1}}, {{1, 3}, {0, 6}}};
-    int i=0; 
-    int S;
-    cout<<"Enter source vertex:"<<endl;
-    cin>>S;
-    vector<int>res = dijkstra(V,adj,S);
-    for(i=0;i<V;i++)
-        cout<<res[i]<<" ";
-  return 0;
+    int V, E, S;
+    cout << "Enter the number of vertices: ";
+    cin >> V;
+    cout << "Enter the number of edges: ";
+    cin >> E;
+
+    vector<vector<pair<int, int>>> adj(V);
+
+    cout << "Enter edges and their weights in the format 'destination weight':\n";
+    for (int i = 0; i < E; i++)
+    {
+        int source, destination, weight;
+        cin >> source >> destination >> weight;
+        adj[source].emplace_back(destination, weight);
+    }
+
+    cout << "Enter source vertex: ";
+    cin >> S;
+
+    vector<int> res = dijkstra(V, adj, S);
+
+    cout << "Shortest distances from source vertex " << S << " are: ";
+    for (int i = 0; i < V; i++)
+        cout << res[i] << " ";
+
+    return 0;
 }
