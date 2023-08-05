@@ -55,7 +55,7 @@ int main()
     {
         int source, destination, weight;
         cin >> source >> destination >> weight;
-        adj[source].emplace_back(destination, weight);
+        adj[source].push_back({destination, weight});
     }
 
     cout << "Enter source vertex: ";
