@@ -35,19 +35,17 @@ void topoSort(vector<vector<pair<int,int>>> &adj, int V)
 }
 int main()
 {
-  int E,V,i;
-  int source,destination,weight;
-  cout<<"Enter the number of vertices in the graph:"<<endl;
+  int V,E,source,destination;
+  cout<<"Enter the number of vertices"<<endl;
   cin>>V;
-  cout<<"Enter the number of edges in the graph:"<<endl;
+  cout<<"Enter the number of edges"<<endl;
   cin>>E;
-  vector<vector<pair<int,int>>> adj(V);
-  for(i=0;i<E;i++)
-   {
-    cout<<"Enter the graph values in this format: (source destination weight)"<<endl;
-     cin>>source>>destination>>weight;
-     adj[source].push_back({destination,weight});
-    }
+  vector<vector<int>> adj(V);
+  for(int i=0;i<E;i++)
+  {
+    cout<<"Enter the graph values in this format: (source destination)"<<endl;
+    cin>>source>>destination;
+    adj[source].push_back(destination);
 
   topoSort(adj,V);
   return 0;
