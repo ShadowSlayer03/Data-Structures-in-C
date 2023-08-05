@@ -50,7 +50,7 @@ int main()
 
     vector<vector<pair<int, int>>> adj(V);
 
-    cout << "Enter edges and their weights in the format 'destination weight':\n";
+    cout << "Enter edges and their weights in the format 'source destination weight':\n";
     for (int i = 0; i < E; i++)
     {
         int source, destination, weight;
