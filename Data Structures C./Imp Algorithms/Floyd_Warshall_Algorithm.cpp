@@ -36,7 +36,7 @@ void shortest_distance(vector<vector<int>> &matrix, int V)
 }
 int main()
 {
-  int V,source,destination,weight;
+  int V,weight;
   cout<<"Enter the number of vertices:"<<endl;
   cin>>V;
   vector<vector<int>> matrix(V, vector<int>(V));
