@@ -2,7 +2,6 @@
 #include<iostream>
 #include<vector>
 #include<queue>
-#include<functional>
 using namespace std;
 
 vector<int> dijkstra(int V, vector<vector<int>> adj[],int S)
