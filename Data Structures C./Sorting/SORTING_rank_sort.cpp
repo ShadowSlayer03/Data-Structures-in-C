@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void rankSort(vector<int> &arr) {
+    int n = arr.size();
+    vector<int> rank(n, 0);
+    vector<int> sortedArr(n, 0);
+
+    for (int i = 0; i < n; ++i) {
+        rank[i] = 0;
+        for (int j = 0; j < n; ++j) {
+            if (arr[j] < arr[i]) {
+                rank[i]++;
+            }
+        }
+        sortedArr[rank[i]] = arr[i];
+    }
+
+    arr = sortedArr;
+}
+
+int main() {
+    vector<int> arr = {64, 34, 25, 12, 22, 11, 90};
+    
+    cout << "Original Array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    rankSort(arr);
+
+    cout << "Sorted Array: ";
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
