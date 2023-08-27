@@ -1,12 +1,12 @@
-// By using Priority Queues
+// Dijkstra by Priority Queues
 #include<iostream>
 #include<vector>
 #include<queue>
 using namespace std;
 
-vector<int> dijkstra(int V, vector<vector<int>> adj[],int S)
+vector<int> dijkstra(vector<vector<pair<int,int>>>& adj,int V, int S)
 {
-  priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
   vector<int> dist(V,1e9);
 
   dist[S] = 0;
@@ -14,19 +14,18 @@ vector<int> dijkstra(int V, vector<vector<int>> adj[],int S)
 
   while(!pq.empty())
     {
-      int dis = pq.top().first;
+      int wt = pq.top().first;
       int node = pq.top().second;
       pq.pop();
 
       for(auto it:adj[node])
         {
-          int adjNode = it[0];
-          int adjWeight = it[1];
-
-          if(dis+adjWeight<dist[adjNode])
+          int adjNode = it.first;
+          int adjWt = it.second;
+          if(wt+adjWt<dist[adjNode])
           {
-             dist[adjNode] = dis+adjWeight;
-             pq.push({dist[adjNode],adjNode});
+            dist[adjNode] = wt+adjWt;
+            pq.push({dist[adjNode],adjNode});
           }
         }
     }
@@ -34,14 +33,23 @@ vector<int> dijkstra(int V, vector<vector<int>> adj[],int S)
 }
 int main()
 {
-    int V = 3;
-    vector<vector<int>> adj[] = {{{1, 1}, {2, 6}}, {{2, 3}, {0, 1}}, {{1, 3}, {0, 6}}};
-    int i=0; 
-    int S;
-    cout<<"Enter source vertex:"<<endl;
-    cin>>S;
-    vector<int>res = dijkstra(V,adj,S);
-    for(i=0;i<V;i++)
-        cout<<res[i]<<" ";
+  int V,E,S,source,destination,weight;
+  cout<<"Enter the number of vertices in the graph: "<<endl;
+  cin>>V;
+  cout<<"Enter the number of edges: "<<endl;
+  cin>>E;
+  vector<vector<pair<int,int>>> adj(V);
+  cout<<"Enter the graph in this format(source destination weight)";
+  for(int i=0;i<E;i++)
+    {
+      cin>>source>>destination>>weight;
+      adj[source].push_back({destination,weight});
+      adj[destination].push_back({source,weight});
+    }
+  cout<<"Enter the source vertex:"<<endl;
+  cin>>S;
+  vector<int> res = dijkstra(adj,V,S);
+  for(int i=0;i<V;i++)
+    cout<<"Shortest distance from source to vertex "<<i<<" is "<<res[i]<<endl;
   return 0;
 }
