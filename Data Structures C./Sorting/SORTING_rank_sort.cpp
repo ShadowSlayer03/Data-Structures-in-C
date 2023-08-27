@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
 void rankSort(vector<int> &arr) {
@@ -7,10 +8,10 @@ void rankSort(vector<int> &arr) {
     vector<int> rank(n, 0);
     vector<int> sortedArr(n, 0);
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         rank[i] = 0;
-        for (int j = 0; j < n; ++j) {
-            if (arr[j] < arr[i]) {
+        for (int j = 0; j < n; j++) {
+            if (arr[j] < arr[i] || (arr[j] == arr[i] && j < i)) {
                 rank[i]++;
             }
         }
@@ -21,7 +22,7 @@ void rankSort(vector<int> &arr) {
 }
 
 int main() {
-    vector<int> arr = {64, 34, 25, 12, 22, 11, 90};
+    vector<int> arr = {64, 11, 25, 11, 22, 11, 90};
     
     cout << "Original Array: ";
     for (int num : arr) {
