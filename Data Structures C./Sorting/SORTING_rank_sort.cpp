@@ -9,7 +9,6 @@ void rankSort(vector<int> &arr) {
     vector<int> sortedArr(n, 0);
 
     for (int i = 0; i < n; i++) {
-        rank[i] = 0;
         for (int j = 0; j < n; j++) {
             if (arr[j] < arr[i] || (arr[j] == arr[i] && j < i)) {
                 rank[i]++;
